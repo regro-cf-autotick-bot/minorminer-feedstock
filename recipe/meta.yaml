@@ -1,5 +1,5 @@
 {% set name = "minorminer" %}
-{% set version = "0.2.10" %}
+{% set version = "0.2.22" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/dwavesystems/minorminer/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 83c4a739d4dd3b87b223581801545546a41aec15315e223b55e994371361ec34
+  sha256: 9b052cd07e5a43200a91f15a2dd7edd0725456504a61a2f24d7f218ac440b2ce
 
 build:
   script: {{ PYTHON }} -m pip install . -vv
@@ -20,6 +20,7 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - cython                                 # [build_platform != target_platform]
     - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
   host:
     - cython >=0.29.21,<3.0
     - pip
@@ -27,14 +28,15 @@ requirements:
     - setuptools >=46.4.0
     - wheel
   run:
+    - dwave-graphs >=1,<2
     - dwave-networkx >=0.8.10
-    - fasteners
-    - homebase
-    - networkx
-    - numpy
+    - fasteners >=0.15
+    - homebase >=1.0.1
+    - networkx >=3.2,<4
+    - numpy >=2,<3
     - python
     - rectangle-packer >=2.0.1
-    - scipy
+    - scipy >=1.13
 
 test:
   imports:
