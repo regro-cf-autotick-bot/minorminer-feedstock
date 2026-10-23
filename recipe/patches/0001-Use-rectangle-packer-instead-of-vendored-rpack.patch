@@ -1,0 +1,53 @@
+From: Bastian Zimmermann <10774221+BastianZim@users.noreply.github.com>
+Subject: [PATCH] Use rectangle-packer instead of vendored rpack
+
+minorminer vendors rectangle-packer 2.0.2 (unmodified apart from the import
+path) as minorminer._extern.rpack. Use the conda-forge rectangle-packer
+package instead.
+---
+diff --git a/pyproject.toml b/pyproject.toml
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -15,7 +15,7 @@ authors = [
+ maintainers = [
+     {name = "D-Wave Inc.", email = "tools@dwavesys.com"},
+ ]
+-license-files = ["LICENSE", "external/glasgow-subgraph-solver/LICENCE", "minorminer/_extern/rpack/LICENSE.md"]
++license-files = ["LICENSE", "external/glasgow-subgraph-solver/LICENCE"]
+ classifiers = [
+     "Operating System :: Microsoft :: Windows",
+     "Operating System :: POSIX",
+diff --git a/setup.py b/setup.py
+--- a/setup.py
++++ b/setup.py
+@@ -129,13 +129,6 @@ extensions = [
+         language='c++',
+         extra_compile_args=extra_compile_args + extra_compile_args_glasgow,
+     ),
+-    Extension(
+-        name="minorminer._extern.rpack._core",
+-        sources=["./minorminer/_extern/rpack/_core.pyx",
+-                 "./minorminer/_extern/rpack/src/rpackcore.c"],
+-        include_dirs=["./minorminer/_extern/rpack/include"],
+-        language='c',
+-    ),
+ ]
+ 
+ setup(
+@@ -143,8 +136,6 @@ setup(
+     packages=['minorminer',
+               'minorminer.layout',
+               'minorminer.utils',
+-              'minorminer._extern',
+-              'minorminer._extern.rpack',
+               ],
+     include_package_data=True,
+ )
+diff --git a/minorminer/layout/layout.py b/minorminer/layout/layout.py
+--- a/minorminer/layout/layout.py
++++ b/minorminer/layout/layout.py
+@@ -21,3 +21,3 @@ from scipy import optimize, spatial
+ from math import ceil
+-from minorminer._extern import rpack
++import rpack
+ 
